@@ -8,13 +8,6 @@ media
 
 # Backup files # 
 *.bak 
-# env
-*.env
-*.env.*
-.env
-.env.db
-.env.kc
-
 
 # If you are using PyCharm # 
 .idea/**/workspace.xml 
@@ -83,6 +76,7 @@ celerybeat-schedule.*
 *.sage.py 
 
 # Environments 
+.env.*
 .env 
 .venv 
 env/ 
