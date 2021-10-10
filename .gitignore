@@ -11,6 +11,9 @@ media
 # env
 *.env
 *.env.*
+.env
+.env.db
+.env.kc
 
 
 # If you are using PyCharm # 
