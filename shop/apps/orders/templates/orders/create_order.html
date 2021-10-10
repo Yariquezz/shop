@@ -1,0 +1,14 @@
+{% extends 'orders/base.html' %}
+{% block title %} Order {% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav_bar %}
+{% endblock %}
+{% block main_content %}
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-dark" type="submit" value="Order">
+</form>
+</br>
+<a class="btn btn-dark" onClick="javascript:history.go(-1);">Back</a>
+{% endblock %}

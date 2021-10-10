@@ -1,0 +1,6 @@
+Django
+psycopg2-binary
+Pillow
+django-3-jet
+python-dotenv
+gunicorn

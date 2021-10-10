@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  web:
+    build: ./shop
+    command: gunicorn shop.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/shop/shop/static
+      - media_volume:/home/shop/shop/media
+      - service_log:/var/log/shop/shop.log
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.db
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/shop/shop/static
+      - access_log:/var/log/nginx/nginx.vhost.access.log;
+      - error_log:/var/log/nginx/nginx.vhost.errors.log;
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+  keycloak:
+    image: jboss/keycloak:latest
+    env_file:
+      - ./.env
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+volumes:
+  service_log:
+  postgres_data:
+  static_volume:
+  media_volume:
+  access_log:
+  error_log:

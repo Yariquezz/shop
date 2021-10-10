@@ -1,0 +1,99 @@
+{% extends 'orders/base.html' %}
+
+{% block title %} Order {% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav_bar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        {% if user.is_active %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {% endif %}
+        <a class="navbar-brand" href="/">Test Shop</a>
+        {% if user.is_active %}
+        <a href="{% url 'accounts:logout'%}" class="nav-link">Logout</a>
+        {% else %}
+        <a href="{% url 'accounts:login'%}" class="nav-link">Login</a>
+        {% endif %}
+        {% if user.is_active %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'accounts:login' %}">User: {{ user }}</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    {% if items_quantity == 1 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Cart | {{ items_quantity }} item</a>
+                    {% elif items_quantity > 0 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Cart | {{ items_quantity }} items</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+        <form class="d-flex" action="{% url 'products:search_results' %}" method="GET">
+            <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="q">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
+    </div>
+    <!-- Modal Logout -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Logut</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You want to logout?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+{% block main_content %}
+{% if order_list %}
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">ORDER</th>
+            <th scope="col">SHIPPING ADDRESS</th>
+            <th scope="col">PAYMENT STATUS</th>
+            <th scope="col">SHIPMENT STATUS</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    {% for order in order_list %}
+    <tr class="table-light">
+        <td class="table-light">{{ order.public_id }}</td>
+        <td class="table-light">{{ order.shipping_address }}</td>
+        <td class="table-light">{{ order.payment }}</td>
+        <td class="table-light">{{ order.shipped}}</td>
+        <td class="table-light"><a href="{% url 'orders:orders_details' public_id=order.public_id %}" class=" btn
+                btn-secondary">Details</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<a class="btn btn-dark" onClick="javascript:history.go(-1);">Back</a>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'products/base.html' %}
+
+{% block title %} {{ object.title }} {% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav_bar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        {% if user.is_active %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {% endif %}
+        <a class="navbar-brand" href="/">Test Shop</a>
+        {% if user.is_active %}
+        <a href="{% url 'accounts:logout'%}" class="nav-link">Logout</a>
+        {% else %}
+        <a href="{% url 'accounts:login'%}" class="nav-link">Login</a>
+        {% endif %}
+        {% if user.is_active %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'accounts:login' %}">User: {{ user }}</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders:orders'%}">Orders</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    {% if items_quantity == 1 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Cart | {{ items_quantity }} item</a>
+                    {% elif items_quantity > 0 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Cart | {{ items_quantity }} items</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+        <form class="d-flex" action="{% url 'products:search_results' %}" method="GET">
+            <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="q">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Logut</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You want to logut?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+{% block main_content %}
+<div class="row g-5">
+    <article class="blog-post">
+        <h2 class="blog-post-title"><strong>{{ object.title }}</strong></h2>
+        <p class="blog-post-meta">{{ object.created_on}}
+            </br></br>
+            {% if object.image_1 and not object.image_2 %}
+            <img src="{{ object.image_1.url }}" class="card-img-top" alt="object.image_1"
+                style="width: 50rem;padding: 2%;">
+            </br>
+            {% elif object.image_2 and object.image_3 %}
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ object.image_1.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ object.image_2.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ object.image_3.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        {% elif object.image_2 and not object.image_3 %}
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ object.image_1.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ object.image_2.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        {% endif %}
+        <p>{{ object.description | safe }}</p>
+        <p class="card-text"><small class="text-muted">{{ object.created_on|date:"M. d, Y"}} | <a
+                    href="{% url 'products:product_detail' object.slug %}">
+                    {{ object.category }}</a></small>
+        <p class="card-text"><strong>{{ object.price|floatformat:2 }} UAH </strong></p>
+        {% if user.is_active %}
+        <a href="{% url 'products:add_to_cart' object.product_code %}" class="btn btn-dark">Add to
+            cart</a>
+        {% else %}
+        <a class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Add to cart</a>
+        {% endif %}
+        <a class="btn btn-dark" onClick="javascript:history.go(-1);">Back</a>
+    </article>
+</div>
+<!-- Modal auth -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel2">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>For adding product to your cart you need to login or register </p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" href="{% url 'accounts:login' %}">Login</a>
+                <a class="btn btn-primary" href="{% url 'accounts:register' %}">Register</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
