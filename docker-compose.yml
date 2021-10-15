@@ -47,7 +47,7 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - db
+      - postgres
   redis:
     image: redis
     restart: always
@@ -75,3 +75,4 @@ volumes:
   access_log:
   error_log:
   home_volume:
+  certs:
