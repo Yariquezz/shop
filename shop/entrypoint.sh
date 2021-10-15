@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$DATABASE" = "postgres" ]
+if [ "$DB_VENDOR" = "POSTGRES" ]
 then
     echo "Waiting for postgres..."
 
@@ -11,7 +11,6 @@ then
     echo "PostgreSQL started"
 fi
 
-python manage.py flush --no-input
 echo "Makemigrations..."
 python manage.py makemigrations
 echo "Migrate..."

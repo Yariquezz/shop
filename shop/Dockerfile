@@ -33,9 +33,8 @@ RUN apk update \
 
 # lint
 RUN pip install --upgrade pip
-RUN pip install flake8
 COPY . .
-RUN flake8 --ignore=E501,F401 .
+RUN flake8 --statistic --ignore=E501 .
 
 # install dependencies
 COPY ./requirements.txt .
@@ -77,8 +76,10 @@ COPY . $SHOP_HOME
 # chown all the files to the app user
 RUN chown -R shop:shop $SHOP_HOME
 RUN mkdir -p /home/shop/shop/static
+RUN mkdir -p /home/shop/shop/media
 
 RUN chown -R shop:root /home/shop/shop/static
+RUN chown -R shop:root /home/shop/shop/media
 RUN chown -R shop:root /usr/local/lib/python3.8/site-packages/jet/migrations/
 # change to the app user
 USER shop

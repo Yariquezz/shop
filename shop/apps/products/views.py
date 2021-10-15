@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.views import generic
 from .models import Products
-from apps.carts.models import Cart, CartItems, UserProxy
+from apps.carts.models import Cart, CartItems
 from django.shortcuts import get_object_or_404, redirect
 from django.db.models import Q, Sum
 from django.contrib import messages

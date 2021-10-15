@@ -4,7 +4,6 @@ from django.views import generic
 from django.contrib import messages
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import HttpResponse
 import logging
 
 logger = logging.getLogger(__name__)

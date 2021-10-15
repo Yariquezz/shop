@@ -92,27 +92,36 @@ DATABASES = {
         'NAME': os.environ.get("DB_NAME", default='test_shop'),
         'USER': os.environ.get("DB_USER", default='django'),
         'PASSWORD': os.environ.get("DB_PASS", default='django'),
-        'HOST': os.environ.get("DB_HOST", default='192.168.0.108'),
-        'PORT': '5432',
+        'HOST': os.environ.get("DB_HOST", default='localhost'),
+        'PORT': os.environ.get("DB_PORT", default='5432'),
     },
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+USER_SIM_VALIDATOR = \
+    'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
+MIN_LEN_VALIDATOR = \
+    'django.contrib.auth.password_validation.MinimumLengthValidator'
+COMMON_PASSWORD_VALIDATOR = \
+    'django.contrib.auth.password_validation.CommonPasswordValidator'
+NUMERIC_PASSWORD_VALIDATOR = \
+    'django.contrib.auth.password_validation.NumericPasswordValidator'
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': USER_SIM_VALIDATOR,
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': MIN_LEN_VALIDATOR,
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': COMMON_PASSWORD_VALIDATOR,
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': NUMERIC_PASSWORD_VALIDATOR,
     },
 ]
 
@@ -147,13 +156,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGGING_FORMAT = \
+    '{levelname} {asctime} {module} {process:d} {thread:d} {message}'
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'format': LOGGING_FORMAT,
             'style': '{',
         },
         'simple': {
@@ -191,3 +202,10 @@ LOGGING = {
 
     }
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'your_account@gmail.com'
+EMAIL_HOST_PASSWORD = 'your account’s password'
