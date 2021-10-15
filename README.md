@@ -43,5 +43,5 @@ Open your favorite browser and follow the link http://127.0.0.1:8000/
 
 # Voila! It's works!
 
-
+[![Django CI](https://github.com/Yariquezz/shop/actions/workflows/django.yml/badge.svg?branch=master&event=push)](https://github.com/Yariquezz/shop/actions/workflows/django.yml)
 
