@@ -3,8 +3,6 @@ name: Django CI
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
 
 jobs:
   build:
@@ -33,10 +31,10 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd shop/shop
+            cd shop
             docker-compose -f docker-compose.yml down -v
             git pull origin master -f
             docker-compose -f docker-compose.yml up -d --build
