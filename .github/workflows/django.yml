@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.9]
 
     steps:
       - name: Start actions
@@ -41,5 +41,5 @@ jobs:
           script: |
             cd shop/shop
             docker-compose -f docker-compose.yml down -v
-            git pull origin master
+            git pull origin master -f
             docker-compose -f docker-compose.yml up -d --build
