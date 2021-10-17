@@ -34,7 +34,6 @@ class Order(models.Model):
         choices=PAYMENT_STATUS,
         default="NOT_PAID",
         max_length=100
-
     )
     shipped = models.CharField(
         choices=SHIPMENT_STATUS,

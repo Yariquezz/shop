@@ -1,4 +1,5 @@
 from .models import Order
+from .forms import EditOrderForm
 from apps.carts.models import Cart, CartItems
 from django.views import generic
 from django.contrib import messages
@@ -16,12 +17,7 @@ class OrdersView(generic.ListView):
 
 class EditOrder(generic.UpdateView):
     model = Order
-    # form_class = EditPostForm
-    fields = [
-        "shipping_address",
-        "payment",
-        "shipped",
-    ]
+    form_class = EditOrderForm
     template_name = 'orders/create_order.html'
 
 
