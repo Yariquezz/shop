@@ -7,3 +7,4 @@ python-dotenv
 gunicorn
 flake8
 redis
+requests
