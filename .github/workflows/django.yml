@@ -41,3 +41,4 @@ jobs:
           script: |
             cd shop/shop
             git pull origin master
+            docker-compose -f docker-compose.yml up -d --build
