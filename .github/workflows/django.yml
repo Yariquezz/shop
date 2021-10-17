@@ -28,9 +28,6 @@ jobs:
       - name: Run Tests
         run: |
           python3 shop/manage.py test
-      - name: Run Deployment
-        run: |
-          docker-compose -f docker-compose-actions.yml build
       - name: Pull from Github
         uses: appleboy/ssh-action@master
         with:
