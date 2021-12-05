@@ -34,7 +34,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd shop
+            cd shop/shop
             docker-compose -f docker-compose.yml down -v
             git pull origin master -f
             docker-compose -f docker-compose.yml up -d --build
