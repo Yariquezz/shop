@@ -24,7 +24,7 @@ services:
     env_file:
       - ./.env
     ports:
-    - 5432:5432
+      - 5432:5432
   nginx:
     build: ./nginx
     restart: always
@@ -48,6 +48,15 @@ services:
       - 8080:8080
     depends_on:
       - postgres
+  jaeger-agent:
+    image: jaegertracing/jaeger-agent
+    command: [ "--reporter.grpc.host-port=192.168.0.110:14250" ]
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+    restart: on-failure
   redis:
     image: redis
     restart: always
@@ -68,11 +77,11 @@ services:
       - redis
 
 volumes:
-  service_log:
-  postgres_data:
-  static_volume:
-  media_volume:
-  access_log:
-  error_log:
-  home_volume:
-  certs:
+  service_log: null
+  postgres_data: null
+  static_volume: null
+  media_volume: null
+  access_log: null
+  error_log: null
+  home_volume: null
+  certs: null
