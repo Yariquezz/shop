@@ -8,3 +8,5 @@ gunicorn
 flake8
 redis
 requests
+jaeger-client
+django_opentracing
