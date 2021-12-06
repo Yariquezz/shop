@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import django_opentracing
+from jaeger_client import Config
 import os
 
 
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_opentracing.OpenTracingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -215,3 +218,42 @@ EMAIL_HOST_PASSWORD = os.environ.get(
     "EMAIL_HOST_PASSWORD",
     "your_password"
 )
+
+# OpenTracing settings
+
+# if not included, defaults to True.
+# has to come before OPENTRACING_TRACING setting because python...
+OPENTRACING_TRACE_ALL = True
+
+# defaults to []
+# only valid if OPENTRACING_TRACE_ALL == True
+OPENTRACING_TRACED_ATTRIBUTES = ['arg1', 'arg2']
+
+# Callable that returns an `opentracing.Tracer` implementation.
+OPENTRACING_TRACER_CALLABLE = 'opentracing.Tracer'
+
+config = Config(
+    config={  # usually read from some yaml config
+        'sampler': {
+            'type': 'const',
+            'param': 1,
+        },
+        'local_agent': {
+            'reporting_host': os.environ.get(
+                'OPENTRACING_REPORTING_HOST',
+                default='localhost'
+            ),
+            'reporting_port': os.environ.get(
+                'OPENTRACING_REPORTING_PORT',
+                default='5775'
+            ),
+        },
+        'logging': True,
+    },
+    service_name='test_shop',
+    validate=True,
+)
+tracer = config.initialize_tracer()
+
+# some_opentracing_tracer can be any valid OpenTracing tracer implementation
+OPENTRACING_TRACING = django_opentracing.DjangoTracing(tracer)
