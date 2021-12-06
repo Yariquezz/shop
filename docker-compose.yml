@@ -40,14 +40,6 @@ services:
       - 80:80
     depends_on:
       - web
-  keycloak:
-    image: jboss/keycloak:latest
-    env_file:
-      - ./.env
-    ports:
-      - 8080:8080
-    depends_on:
-      - postgres
   jaeger-agent:
     image: jaegertracing/jaeger-agent
     command: [ "--reporter.grpc.host-port=192.168.0.110:14250" ]

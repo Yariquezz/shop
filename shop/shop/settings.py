@@ -245,7 +245,7 @@ config = Config(
             ),
             'reporting_port': os.environ.get(
                 'OPENTRACING_REPORTING_PORT',
-                default='5775'
+                default='6831'
             ),
         },
         'logging': True,
