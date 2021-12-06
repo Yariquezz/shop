@@ -3,12 +3,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .forms import LoginForm, UserForm
 from django.contrib import messages
+from django.conf import settings
 import logging
 
-
+tracing = settings.OPENTRACING_TRACING
 logger = logging.getLogger(__name__)
 
 
+@tracing.trace()
 def login_form(request):
     list(messages.get_messages(request))
     print(request.session.session_key)
@@ -41,6 +43,7 @@ def login_form(request):
     return render(request, 'accounts/login.html', context)
 
 
+@tracing.trace()
 def register_form(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
@@ -69,6 +72,7 @@ def register_form(request):
     return render(request, 'accounts/register.html', context)
 
 
+@tracing.trace()
 def logout_form(request):
     logout(request)
     form = LoginForm()
