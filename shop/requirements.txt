@@ -1,4 +1,4 @@
-Django
+Django==3.2.10
 Celery
 psycopg2-binary
 Pillow
@@ -8,5 +8,3 @@ gunicorn
 flake8
 redis
 requests
-jaeger-client
-django_opentracing
