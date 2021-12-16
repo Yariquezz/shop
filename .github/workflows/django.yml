@@ -29,9 +29,7 @@ jobs:
           flake8 --ignore=E501,F401 .
       - name: Run Tests
         run: |
-          pip install coverage
-          coverage erase
-          coverage run manage.py test
+          python manage.py test
       - name: Pull from Github
         uses: appleboy/ssh-action@master
         with:
