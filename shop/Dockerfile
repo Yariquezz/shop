@@ -37,8 +37,6 @@ RUN pip install flake8
 RUN pip install coverage
 COPY . .
 RUN flake8 --ignore=E501,F401 .
-RUN coverage erase
-RUN coverage run manage.py test
 
 # install dependencies
 COPY ./requirements.txt .
