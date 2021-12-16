@@ -33,11 +33,11 @@ RUN apk update \
 
 # lint
 RUN pip install --upgrade pip
-RUN pip install flake8
+RUN pip install flake8, coverage
 COPY . .
 RUN flake8 --ignore=E501,F401 .
-RUN python -m coverage erase
-RUN python -m coverage run manage.py test
+RUN coverage erase
+RUN coverage run manage.py test
 
 # install dependencies
 COPY ./requirements.txt .
