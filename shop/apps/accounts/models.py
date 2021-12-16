@@ -8,11 +8,10 @@ class DiscountCard(models.Model):
     card_no = models.TextField(max_length=500, null=True)
     benefits = models.JSONField(
         null=True,
-        default=dict(content="here")
     )
 
     def __str__(self):
-        return f"Card: {self.card_no}"
+        return "Card: %s" % self.card_no
 
 
 class Customer(models.Model):
@@ -53,12 +52,3 @@ class Customer(models.Model):
     @ receiver(post_save, sender=User)
     def save_customer(sender, instance, **kwargs):
         instance.customer.save()
-
-    # @receiver(post_save, sender=User)
-    # def send_verify_mail(sender, instance, **kwargs):
-    #     send_mail(
-    #         "Hello my friend",
-    #         "Message from Django to user %s" % instance.get_username(),
-    #         "yariquezz@gmail.com",
-    #         [instance.email],
-    #     )

@@ -5,26 +5,8 @@ from apps.products.models import Products
 import uuid
 
 
-class UserProxy(models.Model):
-    user = models.OneToOneField(
-        User,
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE
-    )
-    session = models.CharField(
-        max_length=32,
-        null=True,
-    )
-
-
 class Cart(models.Model):
-    # user = models.ForeignKey(
-    #     UserProxy,
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    # )
+
     user = models.ForeignKey(
         User,
         null=True,
@@ -46,7 +28,7 @@ class Cart(models.Model):
     )
 
     def __str__(self):
-        return f"Cart ID: {self.public_id}"
+        return "Cart ID: %s" % self.public_id
 
 
 class CartItems(models.Model):
@@ -70,4 +52,4 @@ class CartItems(models.Model):
         return self.product.price * self.quantity
 
     def __str__(self):
-        return f'Product {self.product} cart {self.cart}'
+        return 'Product %s cart %s' % (self.product, self.cart)

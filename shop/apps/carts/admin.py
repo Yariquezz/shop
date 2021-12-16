@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Cart, CartItems, UserProxy
+from . models import Cart, CartItems
 
 
 class CartAdmin(admin.ModelAdmin):
@@ -33,17 +33,5 @@ class CartItemsAdmin(admin.ModelAdmin):
     ]
 
 
-class UserProxyAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "user",
-        "session",
-    )
-    search_fields = [
-        "user",
-    ]
-
-
 admin.site.register(Cart, CartAdmin)
-admin.site.register(UserProxy, UserProxyAdmin)
 admin.site.register(CartItems, CartItemsAdmin)

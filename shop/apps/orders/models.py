@@ -46,7 +46,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return f"Order ID: {self.public_id}"
+        return "Order ID: %s" % self.public_id
 
     def get_absolute_url(self):
         return reverse(

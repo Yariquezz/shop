@@ -23,7 +23,7 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse(
             'products:search_results',
-            kwargs={"Q": self.name}
+            kwargs=dict(Q=self.name),
         )
 
 
@@ -73,7 +73,6 @@ class Products(models.Model):
     )
     content = models.JSONField(
         null=True,
-        default=dict(content="here")
     )
     status = models.IntegerField(
         choices=STATUS,

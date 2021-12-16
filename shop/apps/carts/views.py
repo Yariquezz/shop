@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from django.contrib import messages
 from .models import CartItems, Cart
 from apps.products.models import Products
 from django.views import generic
@@ -60,10 +59,8 @@ def add_item(request, product_code):
         )
         cart_item.quantity += 1
         cart_item.save()
-        messages.success(request, "Add item!")
     except Exception as err:
         logger.error(err)
-        messages.error(request, err)
     return redirect('carts:cart')
 
 
@@ -86,11 +83,9 @@ def delete_item(request, product_code):
             cart_item.save()
         else:
             cart_item.delete()
-            messages.success(request, "Item removed!")
         if CartItems.objects.count() < 1:
             return redirect('products:products')
     except Exception as err:
         logger.error(err)
-        messages.error(request, err)
 
     return redirect('carts:cart')
