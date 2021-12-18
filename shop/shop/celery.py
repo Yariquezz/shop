@@ -14,12 +14,12 @@ app.autodiscover_tasks()
 
 
 @app.task(bind=True)
-def send_confirmation_email(self, subject):
+def send_confirmation_email(self, subject, message):
     while True:
         try:
             send_mail(
                 subject,
-                'Here is the message.',
+                message,
                 'test_shop@gmail.com',
                 [subject],
                 fail_silently=False,

@@ -9,3 +9,4 @@ flake8
 redis
 requests
 coverage
+six
