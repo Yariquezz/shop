@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres
+  labels:
+    purpose: run-db-pod
+spec:
+  containers:
+  - name: postgress
+    image: postgres:latest
+    env:
+    - name: POSTGRES_USER
+      value: "django"
+    - name: POSTGRES_PASSWORD
+      value: "django"
+    - name: POSTGRES_DB
+      value: "test_shop"
+    ports:
+      - containerPort: 5432
