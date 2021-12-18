@@ -32,10 +32,6 @@ services:
     volumes:
       - static_volume:/home/shop/shop/static
       - media_volume:/home/shop/shop/media
-      - public:/var/www/html
-      - conf.d:/etc/nginx/conf.d
-      - conf:/etc/nginx/ssl
-      - data:/var/www/certbot
       - access_log:/var/log/nginx/nginx.vhost.access.log;
       - error_log:/var/log/nginx/nginx.vhost.errors.log;
       - certs:/etc/nginx/certs
@@ -44,16 +40,6 @@ services:
       - 80:80
     depends_on:
       - web
-      - certbot
-  certbot:
-    image: certbot/certbot:latest
-    command: certonly --webroot --webroot-path=/var/www/certbot --email
-      yariquezz@gmail.com --agree-tos --no-eff-email -d yarique.com -d
-      www.yarique.com
-    volumes:
-      - conf:/etc/letsencrypt
-      - logs:/var/log/letsencrypt
-      - data:/var/www/certbot
   redis:
     image: redis
     restart: always
@@ -82,8 +68,3 @@ volumes:
   error_log: null
   home_volume: null
   certs: null
-  conf: null
-  public: null
-  conf.d: null
-  data: null
-  logs: null
