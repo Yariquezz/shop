@@ -73,7 +73,10 @@ def register_form(request):
                         new_user
                     ),
                 })
-            send_confirmation_email(new_user.email, message)
+            send_confirmation_email(
+                subject=new_user.email,
+                message=message
+            )
             user = authenticate(
                 username=user_form.cleaned_data['username'],
                 password=user_form.cleaned_data['password'],
