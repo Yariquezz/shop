@@ -61,7 +61,7 @@ def register_form(request):
             new_user.save()
             current_site = get_current_site(request)
             message = render_to_string(
-                'email_template.html', {
+                'accounts/email_template.html', {
                     'user': new_user,
                     'domain': current_site.domain,
                     'uid': urlsafe_base64_encode(
