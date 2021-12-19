@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,10 +83,6 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default1': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get("DB_NAME", default='test_shop'),
@@ -97,6 +93,14 @@ DATABASES = {
     },
 }
 
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    # Covers regular testing and django-coverage
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+    DATABASES['default']['NAME'] = BASE_DIR / 'db.sqlite3',
+    DATABASES['default'].pop('USER')
+    DATABASES['default'].pop('PASSWORD')
+    DATABASES['default'].pop('HOST')
+    DATABASES['default'].pop('PORT')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
