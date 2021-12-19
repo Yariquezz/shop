@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM python:3.9.9-alpine as builder
+FROM python:3.8.3-alpine as builder
 
 # create directory for the app user
 RUN mkdir -p /home/shop
@@ -47,7 +47,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /home/shop/shop/wheels -r req
 #########
 
 # pull official base image
-FROM python:3.9.9-alpine
+FROM python:3.8.3-alpine
 
 # create directory for the app user
 RUN mkdir -p /home/shop
@@ -81,8 +81,7 @@ RUN mkdir -p /home/shop/shop/media
 
 RUN chown -R shop:root /home/shop/shop/static
 RUN chown -R shop:root /home/shop/shop/media
-RUN chown -R shop:root /home/shop/shop/api.log
-RUN chown -R shop:root /usr/local/lib/python3.9/site-packages/jet/migrations/
+RUN chown -R shop:root /usr/local/lib/python3.8/site-packages/jet/migrations/
 # change to the app user
 USER shop
 

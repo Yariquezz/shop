@@ -45,11 +45,15 @@ wheels/
 *.egg 
 *.manifest 
 *.spec 
+*.log
 
 # Installer logs 
 pip-log.txt 
 pip-delete-this-directory.txt 
 
+# Certs
+*.crt
+*.key
 # Unit test / coverage reports 
 htmlcov/ 
 .tox/ 

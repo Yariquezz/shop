@@ -1,0 +1,44 @@
+name: Django deployment CI
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Start actions
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r shop/requirements.txt
+      - name: Code Quality
+        run: |
+          pip install flake8
+          flake8 --ignore=E501,F401 .
+      - name: Run Tests
+        run: |
+          coverage run shop/manage.py test apps
+      - name: Pull from Github
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd shop/shop
+            docker-compose -f docker-compose.yml down
+            git pull origin master -f
+            docker-compose -f docker-compose.yml up -d --build
