@@ -3,7 +3,7 @@ version: '3.7'
 services:
   web:
     build: ./shop
-    command: gunicorn shop.wsgi:application --bind 0.0.0.0:8000
+    command: hypercorn shop.asgi:application --bind 0.0.0.0:8000 --workers 2
     volumes:
       - static_volume:/home/shop/shop/static
       - media_volume:/home/shop/shop/media

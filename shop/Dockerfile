@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM python:3.8.3-alpine as builder
+FROM python:3.9.9-alpine as builder
 
 # create directory for the app user
 RUN mkdir -p /home/shop
@@ -47,7 +47,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /home/shop/shop/wheels -r req
 #########
 
 # pull official base image
-FROM python:3.8.3-alpine
+FROM python:3.9.9-alpine
 
 # create directory for the app user
 RUN mkdir -p /home/shop
