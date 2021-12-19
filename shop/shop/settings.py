@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': os.environ.get("DB_NAME", default='test_shop'),
         'USER': os.environ.get("DB_USER", default='django'),
         'PASSWORD': os.environ.get("DB_PASS", default='django'),
-        'HOST': os.environ.get("DB_HOST", default='localhost'),
+        'HOST': os.environ.get("DB_HOST", default='192.168.0.108'),
         'PORT': os.environ.get("DB_PORT", default='5432'),
     },
 }
@@ -186,22 +186,20 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
         },
-        # 'file': {
-        #     'level': 'DEBUG',
-        #     'class': 'logging.FileHandler',
-        #     'filename': os.path.join(BASE_DIR, 'api.log'),
-        #     'formatter': 'verbose',
-        # },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'api.log'),
+            'formatter': 'verbose',
+        },
     },
     'loggers': {
         'django': {
-            # 'handlers': ['console', 'file'],
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['mail_admins'],
-            # 'handlers': ['mail_admins', 'file'],
+            'handlers': ['mail_admins', 'file'],
             'level': 'ERROR',
             'propagate': False,
         },

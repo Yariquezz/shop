@@ -81,6 +81,7 @@ RUN mkdir -p /home/shop/shop/media
 
 RUN chown -R shop:root /home/shop/shop/static
 RUN chown -R shop:root /home/shop/shop/media
+RUN chown -R shop:root /home/shop/shop/api.log
 RUN chown -R shop:root /usr/local/lib/python3.9/site-packages/jet/migrations/
 # change to the app user
 USER shop
