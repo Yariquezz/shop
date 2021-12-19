@@ -40,6 +40,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd shop/shop
-            docker-compose -f docker-compose.yml down -v
+            docker-compose -f docker-compose.yml down
             git pull origin master -f
             docker-compose -f docker-compose.yml up -d --build
