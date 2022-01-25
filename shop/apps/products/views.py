@@ -73,9 +73,13 @@ class SearchResultsView(generic.ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         object_list = Products.objects.filter(
-            Q(description__icontains=query) |
-            Q(title__icontains=query) |
-            Q(content__icontains=query)
+            Q(
+                description__icontains=query
+            ) | Q(
+                title__icontains=query
+            ) | Q(
+                content__icontains=query
+            )
         )
         if not object_list:
             category = Category.objects.filter(Q(name__icontains=query))
