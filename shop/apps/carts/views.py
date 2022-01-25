@@ -43,6 +43,25 @@ class CartView(generic.list.ListView):
         return context
 
 
+class LastCartView(CartView):
+    def get_queryset(self):
+        cart = Cart.objects.filter(
+            user=self.request.user,
+            is_ordered=True,
+        ).last()
+        if not cart:
+            return redirect('products.product')
+        else:
+            cart.is_ordered = True
+            cart.save()
+        items = CartItems.objects.filter(
+            cart=cart,
+        )
+        if not items:
+            return redirect('products.product')
+        return items
+
+
 @login_required
 def add_item(request, product_code):
     try:

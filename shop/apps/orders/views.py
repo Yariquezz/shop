@@ -1,8 +1,8 @@
 from .models import Order
 from .forms import EditOrderForm
 from apps.carts.models import Cart, CartItems
+from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib import messages
 from django.shortcuts import render
 from django.shortcuts import redirect
 import logging
@@ -11,8 +11,16 @@ logger = logging.getLogger(__name__)
 
 
 class OrdersView(generic.ListView):
-    queryset = Order.objects.all()
+    # queryset = Order.objects.all()
     template_name = 'orders/order.html'
+
+    def get_queryset(self):
+        empty_orders = Order.objects.filter(
+            shipping_address=None
+        )
+        empty_orders.delete()
+        orders = Order.objects.all()
+        return orders
 
 
 class EditOrder(generic.UpdateView):
@@ -21,22 +29,40 @@ class EditOrder(generic.UpdateView):
     template_name = 'orders/create_order.html'
 
 
-def create_order(request, *args, **kwargs):
+class OrderDeleteView(generic.DeleteView):
+    model = Order
+    template_name = 'orders/delete_order.html'
+    success_url = reverse_lazy('products:products')
+
+
+class OrderUpdateView(generic.UpdateView):
+    model = Order
+    form_class = EditOrderForm
+    template_name = 'orders/update_order.html'
+
+
+def create_order(request):
     try:
         cart = Cart.objects.filter(
             user=request.user,
             is_ordered=False,
         ).first()
-        cart.is_ordered = True
+        if cart:
+            cart.is_ordered = True
+        else:
+            cart = Cart.objects.filter(
+                user=request.user,
+                is_ordered=True,
+            ).last()
+            cart.pk = None
+        cart.save()
         order = Order.objects.create(
             cart=cart,
         )
-        cart.save()
         order.save()
     except Exception as err:
         logger.error(err)
-        messages.error(request, err)
-    return redirect('orders:edit_order', pk=order.id)
+    return redirect('orders:update_order', pk=order.id)
 
 
 def order_details(request, **kwargs):
@@ -55,14 +81,3 @@ def order_details(request, **kwargs):
     context['total'] = total
 
     return render(request, 'orders/order_detail.html', context)
-
-
-class OrderDetailsView(generic.DetailView):
-    model = Order
-    template_name = 'orderss/order_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['orders_items'] = Order.objects.all()
-        context['order_items'] = CartItems.objects.all()
-        return context

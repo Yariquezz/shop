@@ -24,6 +24,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", 'django-insecure')
 DEBUG = int(os.environ.get("DEBUG", default=1))
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(" ")
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+NP_API_KEY = os.environ.get('NP_API_KEY', '')
 
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']

@@ -119,5 +119,9 @@
             </div>
         </div>
     </div>
+    {% if request.user.is_staff %}
+    <button href="{% url 'products:refresh_warehouses' %}" type="button" class="btn btn-dark">Refresh
+        Warehouses</button>
+    {% endif %}
 </main>
 {% endblock %}

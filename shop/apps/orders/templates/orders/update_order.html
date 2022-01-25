@@ -1,0 +1,24 @@
+{% extends 'orders/base.html' %}
+{% block title %} Order {% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav_bar %}
+{% endblock %}
+{% block main_content %}
+</br></br>
+<form autocomplete="off" method="post">{% csrf_token %}
+    <div class="col">
+        <input type="text" class="form-control" placeholder="Відділення НП" aria-label="Відділення НП"
+            id="id_shipping_address" name="shipping_address" required>
+        <input class="btn btn-dark" type="submit" value="Замовити">
+        <a class="btn btn-dark" href="{% url 'orders:delete_order' pk=order.id %}">Повернутись</a>
+    </div>
+
+    </br>
+    <div class="sticky-top">
+
+
+    </div>
+</form>
+
+{% endblock %}

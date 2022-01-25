@@ -94,6 +94,10 @@
     </tr>
     {% endfor %}
 </table>
+{% else %}
+<div class="container">
+    <h1 class="display-2">Not orders yet</h1>
+</div>
 {% endif %}
 <a class="btn btn-dark" onClick="javascript:history.go(-1);">Back</a>
 {% endblock %}
