@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.carts',
     'apps.orders',
-    'apps.payments',
     'apps.products',
 ]
 
@@ -89,7 +88,7 @@ DATABASES = {
         'NAME': os.environ.get("DB_NAME", default='test_shop'),
         'USER': os.environ.get("DB_USER", default='django'),
         'PASSWORD': os.environ.get("DB_PASS", default='django'),
-        'HOST': os.environ.get("DB_HOST", default='192.168.0.108'),
+        'HOST': os.environ.get("DB_HOST", default='localhost'),
         'PORT': os.environ.get("DB_PORT", default='5432'),
     },
 }
@@ -218,5 +217,5 @@ EMAIL_HOST_USER = os.environ.get(
 )
 EMAIL_HOST_PASSWORD = os.environ.get(
     "EMAIL_HOST_PASSWORD",
-    "your_password"
+    "your_pass"
 )
