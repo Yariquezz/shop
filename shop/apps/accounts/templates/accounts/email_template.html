@@ -1,5 +1,6 @@
 {% autoescape off %}
-Hi ,
-Please click on the link to confirm your registration,
+Привіт ,
+Перейдіть за посиланням для завершення реєстрації
 http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+Дякую!
 {% endautoescape %}

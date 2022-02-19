@@ -4,26 +4,26 @@
 {% block header %}
 {% endblock %}
 {% block main_content %}
-<main class="form-signin">
-    <form action="{% url 'accounts:register' %}" method="post">{% csrf_token %}
-        <!-- <img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-        {% if messages %}
-        <div class="postcontent nobottommargin clearfix">
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message|safe }}
+<form action="{% url 'accounts:register' %}" method="post">{% csrf_token %}
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <h3 class="mb-5">Реєстрація</h3>
+                        {{ form.as_p }}
+                        <hr class="my-4">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Реєстрація</button>
+                        <hr class="my-4">
+                        <a class="btn btn-lg btn-block btn-primary mb-2" style="background-color: #3b5998;"
+                            href="{% url 'products:products' %}"><i class="fab fa-facebook-f me-2"></i>Просто
+                            зайти</a>
+
+                    </div>
+                </div>
             </div>
-            {% endfor %}
         </div>
-        {% endif %}
-        <div class="form-floating">
-            {{ form.as_p }}
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
-        <p></p>
-        <a class="w-100 btn btn-lg btn-dark" href="{% url 'products:products' %}">Just let me in</a>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-    </form>
-</main>
+    </div>
+</form>
 {% endblock %}
