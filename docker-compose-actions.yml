@@ -47,21 +47,6 @@ services:
       - 80:80
     depends_on:
       - web
-  keycloak:
-    image: jboss/keycloak:latest
-    environment:
-      - DB_VENDOR=POSTGRES
-      - DB_ADDR=postgres
-      - DB_DATABASE=test_shop
-      - DB_USER=django
-      - DB_PASSWORD=django
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=password
-      - PROXY_ADDRESS_FORWARDING=true
-    ports:
-      - 8080:8080
-    depends_on:
-      - postgres
   redis:
     image: redis
     restart: always
@@ -80,7 +65,6 @@ services:
     depends_on:
       - web
       - redis
-
 volumes:
   service_log:
   postgres_data:
