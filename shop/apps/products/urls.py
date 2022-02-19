@@ -5,6 +5,11 @@ app_name = 'products'
 
 urlpatterns = [
     path(
+        'filter/',
+        views.filter,
+        name='filter'
+    ),
+    path(
         'search/',
         views.SearchResultsView.as_view(),
         name='search_results'

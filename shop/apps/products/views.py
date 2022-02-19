@@ -1,13 +1,14 @@
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views import generic
 from .models import Products, Category
 from apps.carts.models import Cart, CartItems
 from apps.orders.models import Warehouse
-from django.shortcuts import get_object_or_404, redirect
+from apps.accounts.models import Customer
+from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q, Sum
 from django.conf import settings
 import logging
+import uuid
 import requests
 
 
@@ -15,29 +16,79 @@ logger = logging.getLogger(__name__)
 
 
 class ProductsList(generic.ListView):
-    queryset = Products.objects.filter(status=1).order_by('-created_on')
+    queryset = Products.objects.filter(status=1)
     template_name = 'products/products.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            cart = Cart.objects.filter(
-                user=self.request.user,
-                is_ordered=False,
-            )
-            if cart:
-                context['cart'] = cart
-                context['cart_items'] = CartItems.objects.filter(
-                    cart=cart[0]
-                )
-                quantity = CartItems.objects.filter(
-                    cart=cart[0]
-                ).aggregate(Sum('quantity'))
-                context['items_quantity'] = quantity['quantity__sum']
+            customer = self.request.user.customer
         except Exception as err:
             logger.error(err)
+            self.request.session.setdefault(
+                'device',
+                str(uuid.uuid4())
+            )
+            device = self.request.COOKIES.get(
+                'device'
+            )
+            customer, created = Customer.objects.get_or_create(
+                device=device
+            )
+        cart, created = Cart.objects.get_or_create(
+            customer=customer,
+            is_ordered=False,
+        )
+        fltr_items = Category.objects.all()
+        context['fltr_items'] = fltr_items
+        if cart:
+            context['cart'] = cart
+            context['cart_items'] = CartItems.objects.filter(
+                cart=cart
+            )
+            quantity = CartItems.objects.filter(
+                cart=cart
+            ).aggregate(Sum('quantity'))
+            context['items_quantity'] = quantity['quantity__sum']
 
         return context
+
+
+def filter(request, *args, **kwargs):
+    if request.method == 'POST':
+        products_list = Products.objects.filter(
+            category__in=Category.objects.filter(
+                name__in=request.POST.getlist('products')
+            )
+        )
+    else:
+        products_list = Products.objects.filter(status=1)
+    context = dict(
+        products_list=products_list,
+        fltr_items=Category.objects.all(),
+    )
+    try:
+        customer = request.user.customer
+    except Exception as err:
+        logger.error(err)
+        device = request.COOKIES['device']
+        customer, created = Customer.objects.get_or_create(
+            device=device
+        )
+    cart, created = Cart.objects.get_or_create(
+        customer=customer,
+        is_ordered=False,
+    )
+    context['cart'] = cart
+    context['cart_items'] = CartItems.objects.filter(
+        cart=cart
+    )
+    quantity = CartItems.objects.filter(
+        cart=cart
+    ).aggregate(Sum('quantity'))
+    context['items_quantity'] = quantity['quantity__sum']
+
+    return render(request, 'products/products.html', context)
 
 
 class ProductDetail(generic.DetailView):
@@ -47,22 +98,25 @@ class ProductDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            cart = Cart.objects.filter(
-                user=self.request.user,
-                is_ordered=False,
-            )
-            if cart:
-                context['cart'] = cart
-                context['cart_items'] = CartItems.objects.filter(
-                    cart=cart[0]
-                )
-                quantity = CartItems.objects.filter(
-                    cart=cart[0]
-                ).aggregate(Sum('quantity'))
-                context['items_quantity'] = quantity['quantity__sum']
+            customer = self.request.user.customer
         except Exception as err:
             logger.error(err)
-
+            device = self.request.COOKIES['device']
+            customer, created = Customer.objects.get_or_create(
+                device=device
+            )
+        cart, created = Cart.objects.get_or_create(
+            customer=customer,
+            is_ordered=False,
+        )
+        context['cart'] = cart
+        context['cart_items'] = CartItems.objects.filter(
+            cart=cart
+        )
+        quantity = CartItems.objects.filter(
+            cart=cart
+        ).aggregate(Sum('quantity'))
+        context['items_quantity'] = quantity['quantity__sum']
         return context
 
 
@@ -84,35 +138,37 @@ class SearchResultsView(generic.ListView):
         if not object_list:
             category = Category.objects.filter(Q(name__icontains=query))
             if len(category) > 0:
-                object_list = Products.objects.filter(category=category)
+                object_list = Products.objects.filter(category__in=category)
         return object_list
 
 
-@login_required
 def add_to_cart(request, product_code):
     try:
-        cart = Cart.objects.filter(
-            user=request.user,
-            is_ordered=False,
-        ).first()
-        if not cart:
-            cart = Cart.objects.create(
-                user=request.user,
-            )
-
-        product = get_object_or_404(
-            Products,
-            product_code=product_code
-        )
-
-        cart_item, created = CartItems.objects.get_or_create(
-            cart=cart,
-            product=product
-        )
-        cart_item.quantity += 1
-        cart_item.save()
+        customer = request.user.customer
     except Exception as err:
         logger.error(err)
+        device = request.COOKIES['device']
+        customer, created = Customer.objects.get_or_create(
+            device=device
+        )
+
+    cart, created = Cart.objects.get_or_create(
+        customer=customer,
+        is_ordered=False,
+    )
+
+    product = get_object_or_404(
+        Products,
+        product_code=product_code
+    )
+
+    cart_item, created = CartItems.objects.get_or_create(
+        cart=cart,
+        product=product
+    )
+    cart_item.quantity += 1
+    cart_item.save()
+
     return redirect('products:products')
 
 
