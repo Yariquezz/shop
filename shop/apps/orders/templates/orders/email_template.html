@@ -1,0 +1,21 @@
+{% autoescape off %}
+Привіт, {{ user.name }}
+
+{% for order_item in order_items %}
+<tr class="table-light">
+    <td class="table-light">{{ order_item.product }}</td>
+    <td class="table-light">{{ order_item.quantity }}</td>
+    <td class="table-light">{{ order_item.product.price|floatformat:2 }}</td>
+    <td class="table-light">{{ order_item.amount|floatformat:2 }} UAH</td>
+</tr>
+{% endfor %}
+<tr>
+    <th scope="row">До оплати</th>
+    <td colspan="5" class="table-secondary"><strong>{{ total|floatformat:2 }} UAH</strong></td>
+</tr>
+</table>
+
+Ваше замовлення оплачено
+
+
+{% endautoescape %}

@@ -1,17 +1,27 @@
 {% extends 'orders/base.html' %}
-{% block title %} Order {% endblock %}
+{% block title %} Замовлення {% endblock %}
+{% load static %}
+{% block head %}
+<link href="{% static 'orders/css/style.css' %}" rel="stylesheet">
+{% endblock %}
 {% block header %}
 {% endblock %}
 {% block nav_bar %}
 {% endblock %}
 {% block main_content %}
 <form autocomplete="off" method="post">{% csrf_token %}
-    <div class="autocomplete">
-        </br>
-        {{ form.as_p }}
-    </div>
-    <input class="btn btn-dark" type="submit" value="Order">
-    <a class="btn btn-dark" onClick="javascript:history.go(-1);">Back</a>
+    {{ form.as_p }}
+    <label for="exampleDataList" class="form-label">Datalist example</label>
+    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+    <datalist id="datalistOptions">
+        <option value="San Francisco">
+        <option value="New York">
+        <option value="Seattle">
+        <option value="Los Angeles">
+        <option value="Chicago">
+    </datalist>
+    <input class="btn btn-dark" type="submit" value="Замовити">
+    <a class="btn btn-dark" onClick="javascript:history.go(-1);">Повернутись</a>
 </form>
 
 {% endblock %}

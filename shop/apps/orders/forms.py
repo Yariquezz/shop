@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class EditOrderForm(forms.ModelForm):
+
     class Meta:
         model = Order
         fields = ["shipping_address"]
