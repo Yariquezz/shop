@@ -26,7 +26,7 @@ class ClassViewTests(TestCase):
         product.save()
         self.product = product
         cart = Cart.objects.create(
-            user=self.user,
+            customer=self.user.customer,
         )
         cart.save()
         cart_item = CartItems.objects.create(
