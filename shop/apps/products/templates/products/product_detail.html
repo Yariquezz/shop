@@ -6,49 +6,58 @@
 {% block nav_bar %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        {% if user.is_active %}
+        {% if items_quantity > 0 %}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         {% endif %}
-        <a class="navbar-brand" href="/">Test Shop</a>
+        <a class="navbar-brand" href="/">Магазин</a>
         {% if user.is_active %}
-        <a href="{% url 'accounts:logout'%}" class="nav-link">Logout</a>
+        <a href="{% url 'accounts:logout'%}" class="nav-link">Вийти</a>
         {% else %}
-        <a href="{% url 'accounts:login'%}" class="nav-link">Login</a>
+        <a href="{% url 'accounts:login'%}" class="nav-link">Авторизуватись</a>
         {% endif %}
-        {% if user.is_active %}
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if user.is_active %}
                 <li class="nav-item dropdown">
+
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Account
+                        Обліковий запис
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'accounts:login' %}">User: {{ user }}</a></li>
-                        <li><a class="dropdown-item" href="{% url 'orders:orders'%}">Orders</a></li>
+                        <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Користувач: {{ user }}</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders:orders'%}">Замовлення</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Logout</a>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Вийти</a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     {% if items_quantity == 1 %}
-                    <a href="{% url 'carts:cart'%}" class="nav-link">Cart | {{ items_quantity }} item</a>
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Кошик | {{ items_quantity }} товар</a>
                     {% elif items_quantity > 0 %}
-                    <a href="{% url 'carts:cart'%}" class="nav-link">Cart | {{ items_quantity }} items</a>
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Кошик | {{ items_quantity }} товарів</a>
                     {% endif %}
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    {% if items_quantity == 1 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Кошик | {{ items_quantity }} товар</a>
+                    {% elif items_quantity > 0 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Кошик | {{ items_quantity }} товарів</a>
+                    {% endif %}
+                </li>
+                {% endif %}
             </ul>
         </div>
-        {% endif %}
         <form class="d-flex" action="{% url 'products:search_results' %}" method="GET">
-            <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="q">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
+            <input class="form-control me-2" type="text" placeholder="Пошук" aria-label="Search" name="q">
+            <button class="btn btn-outline-secondary" type="submit">Пошук</button>
         </form>
     </div>
     <!-- Modal -->
@@ -57,15 +66,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Logut</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Вийти</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>You want to logut?</p>
+                    <p>Бажаєте вийти?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Logout</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Вийти</a>
                 </div>
             </div>
         </div>
@@ -103,7 +112,7 @@
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
                 data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Наступний</span>
             </button>
         </div>
         {% elif object.image_2 and not object.image_3 %}
@@ -129,17 +138,21 @@
         </div>
         {% endif %}
         <p>{{ object.description | safe }}</p>
-        <p class="card-text"><small class="text-muted">{{ object.created_on|date:"M. d, Y"}} | <a
-                    href="{% url 'products:product_detail' object.slug %}">
-                    {{ object.category }}</a></small>
+        <p class="card-text">
+            <small class="text-muted">{{ object.created_on|date:"M. d, Y"}}</small>
+        </p>
         <p class="card-text"><strong>{{ object.price|floatformat:2 }} UAH </strong></p>
-        {% if user.is_active %}
-        <a href="{% url 'products:add_to_cart' object.product_code %}" class="btn btn-dark">Add to
-            cart</a>
-        {% else %}
-        <a class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Add to cart</a>
-        {% endif %}
-        <a class="btn btn-dark" onClick="javascript:history.go(-1);">Back</a>
+        <form method="post" action="{% url 'products:filter' %}">{% csrf_token %}
+            <input type="hidden" name="products" value="{{ object.category }}">
+            <button type="submit" name="products" value="{{ object.category }}" class="btn btn-light">
+                Інші товари категорії {{ object.category }}
+            </button>
+        </form>
+        </br>
+        <a href="{% url 'products:add_to_cart' object.product_code %}" class="btn btn-dark" style="margin: 5px;">Додати
+            у кошик</a>
+        <a class="btn btn-dark" style="margin: 5px;" onClick="javascript:history.go(-1);">Повернутись на попередню
+            сторінку</a>
     </article>
 </div>
 <!-- Modal auth -->
@@ -148,16 +161,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel2">Login</h5>
+                <h5 class="modal-title" id="staticBackdropLabel2">Авторизуватись</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>For adding product to your cart you need to login or register </p>
+                <p>Для того щоб додати продукт у кошик необхідо авторизуватись </p>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary" href="{% url 'accounts:login' %}">Login</a>
-                <a class="btn btn-primary" href="{% url 'accounts:register' %}">Register</a>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a class="btn btn-primary" href="{% url 'accounts:login' %}">Авторизуватись</a>
+                <a class="btn btn-primary" href="{% url 'accounts:register' %}">Реєстрація</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
             </div>
         </div>
     </div>

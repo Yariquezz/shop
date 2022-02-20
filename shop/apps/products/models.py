@@ -73,6 +73,7 @@ class Products(models.Model):
     )
     content = models.JSONField(
         null=True,
+        default=dict
     )
     status = models.IntegerField(
         choices=STATUS,
@@ -109,6 +110,13 @@ class Products(models.Model):
             logger.error(err)
             url = ''
         return url
+
+    @property
+    def discounted(self):
+        if self.discount:
+            return round(self.price * (1 + self.discount / 100), 10)
+        else:
+            return self.price
 
     def save(self, *args, **kwargs):
         self.product_code = str(uuid.uuid4())

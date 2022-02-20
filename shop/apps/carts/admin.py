@@ -5,7 +5,7 @@ from . models import Cart, CartItems
 class CartAdmin(admin.ModelAdmin):
     list_display = (
         "public_id",
-        "user",
+        "customer",
         "updated",
         "timestamp",
         "is_ordered"
@@ -15,7 +15,7 @@ class CartAdmin(admin.ModelAdmin):
         "timestamp"
     )
     search_fields = [
-        "user",
+        "customer",
     ]
 
 
@@ -29,7 +29,7 @@ class CartItemsAdmin(admin.ModelAdmin):
         "product",
     )
     search_fields = [
-        "user",
+        "customer",
     ]
 
 

@@ -5,38 +5,40 @@ from django.contrib.auth.models import User
 class UserForm(forms.ModelForm):
 
     username = forms.CharField(
-        label="Username: ",
+        label='',
         widget=forms.TextInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Вкажіть Ваш Login"
+                "class": "form-control-lg",
+                "placeholder": "Ваш логін"
             }
         )
     )
 
     email = forms.EmailField(
-        label="Email: ",
+        label='',
         widget=forms.TextInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Вкажіть Ваш Email"
+                "class": "form-control-lg",
+                "placeholder": "Ваш Email"
             }
         )
     )
 
     password = forms.CharField(
-        label="Choose Password: ",
+        label='',
         widget=forms.PasswordInput(
             attrs={
-                "class": "form-control",
+                "class": "form-control-lg",
+                "placeholder": "Вакжіть пароль"
             }
         ),
     )
     confirm_password = forms.CharField(
-        label="Re-enter Password: ",
+        label='',
         widget=forms.PasswordInput(
             attrs={
-                "class": "form-control",
+                "class": "form-control-lg",
+                "placeholder": "Повторіть пароль"
             }
         ),
     )
@@ -62,20 +64,20 @@ class UserForm(forms.ModelForm):
 
 class LoginForm(forms.Form):
     username = forms.CharField(
-        # label="Username:",
+        label='',
         widget=forms.TextInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Login"
+                "class": "form-control-lg",
+                "placeholder": "Логін"
             }
         )
     )
     password = forms.CharField(
-        # label="Password:",
+        label='',
         widget=forms.PasswordInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Password"
+                "class": "form-control-lg",
+                "placeholder": "Пароль"
             }
         ),
     )

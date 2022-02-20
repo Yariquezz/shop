@@ -1,0 +1,36 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+{% block head %}
+<link href="{% static 'orders/css/style.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %} Замовлення {{ object.public_id }}{% endblock %}
+{% block header %}
+{% endblock %}
+{% block main_content %}
+<div style="margin: 5%">
+    <form autocomplete="off" method="post">{% csrf_token %}
+        <label for="exampleDataList" class="form-label">Адреса доставки</label>
+        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Відділення НП"
+            name="shipping_address" required>
+        <datalist id="datalistOptions">
+            {% for warehouse in warehouses %}
+            <option value="{{ warehouse.address }} {{ warehouse.title }}">
+                {% endfor %}
+        </datalist>
+        <label for="phone" class="form-label">Номер телефону</label>
+        <input class="form-control" type="tel" name="phone" id="phone" placeholder="0971234567" pattern="[0-9]{10}"
+            title="Номер телефону" required>
+        {% if user.is_active %}
+        <label for="exampleFormControlInput1" class="form-label">Адреса електронної пошти</label>
+        <input type="email" name="email" class="form-control" id="exampleFormControlInput1" value="{{ user.email }}">
+        {% else %}
+        <label for="exampleFormControlInput1" class="form-label">Адреса електронної пошти</label>
+        <input type="email" name="email" class="form-control" id="exampleFormControlInput1"
+            placeholder="name@example.com">
+        {% endif %}
+        <button class="btn btn-dark" style="margin-top: 5px" type="submit">Замовити</button>
+        <a class="btn btn-dark" style="margin: 5px;" onClick="javascript:history.go(-1);">Повернутись</a>
+    </form>
+</div>
+
+{% endblock %}

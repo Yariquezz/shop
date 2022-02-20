@@ -17,8 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 def login_form(request):
-    list(messages.get_messages(request))
-    print(request.session.session_key)
     if request.user.is_authenticated:
         return redirect('/')
 
@@ -77,11 +75,11 @@ def register_form(request):
                 subject=new_user.email,
                 message=message
             )
-            user = authenticate(
-                username=user_form.cleaned_data['username'],
-                password=user_form.cleaned_data['password'],
+            login(
+                request,
+                new_user,
+                backend='django.contrib.auth.backends.ModelBackend'
             )
-            login(request, user)
             return redirect('/')
         messages.warning(
             request,
@@ -114,6 +112,20 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        login(
+            request,
+            user,
+            backend='django.contrib.auth.backends.ModelBackend'
+        )
         return redirect('/')
     else:
         return HttpResponse('Activation link is invalid!')
+
+
+def handler404(request, *args, **kwargs):
+    try:
+        response = render(request, 'accounts/404.html')
+        response.status_code = 404
+    except Exception as err:
+        logging.error(err)
+    return response

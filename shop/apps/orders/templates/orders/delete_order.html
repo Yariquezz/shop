@@ -1,0 +1,21 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+{% block head %}
+<link href="{% static 'orders/css/style.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %} Замовлення {% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav_bar %}
+{% endblock %}
+{% block main_content %}
+<form autocomplete="off" method="post">{% csrf_token %}
+    <div class="autocomplete">
+        <p>Ви впевненні, що бажаєте видалити замовлення "{{ object }}"?</p>
+        {{ form }}
+    </div>
+    <input class="btn btn-dark" type="submit" value="Видалити">
+    <a class="btn btn-dark" onClick="javascript:history.go(-1);">Повернутись</a>
+</form>
+
+{% endblock %}

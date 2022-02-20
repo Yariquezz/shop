@@ -1,14 +1,14 @@
 
 from django.db import models
-from django.contrib.auth.models import User
+from apps.accounts.models import Customer
 from apps.products.models import Products
 import uuid
 
 
 class Cart(models.Model):
 
-    user = models.ForeignKey(
-        User,
+    customer = models.ForeignKey(
+        Customer,
         null=True,
         blank=True,
         on_delete=models.CASCADE,

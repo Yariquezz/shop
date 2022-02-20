@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order
+from .models import Order, Warehouse
 
 
 class OrdersAdmin(admin.ModelAdmin):
@@ -14,4 +14,10 @@ class OrdersAdmin(admin.ModelAdmin):
     ]
 
 
+class WarehouseAdmin(admin.ModelAdmin):
+    list_display = ['title', 'address']
+    search_fields = ['title', 'address']
+
+
 admin.site.register(Order, OrdersAdmin)
+admin.site.register(Warehouse, WarehouseAdmin)

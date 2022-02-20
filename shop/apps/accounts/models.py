@@ -35,14 +35,19 @@ class Customer(models.Model):
         null=True,
         blank=True
     )
+    device = models.CharField(
+        max_length=500,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         if self.user:
             name = self.user.username
         else:
-            name = 'Anonymous'
+            name = self.device
 
-        return name
+        return str(name)
 
     @ receiver(post_save, sender=User)
     def create_customer(sender, instance, created, **kwargs):
