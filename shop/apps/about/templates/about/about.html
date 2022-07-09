@@ -1,0 +1,273 @@
+{% extends 'about/base.html' %}
+{% load static %}
+{% block title %} Про нас {% endblock %}
+<!-- Navigation -->
+<div class="navbar section no-padding" role="navigation">
+	<!-- Heading -->
+	{% block nav_bar %}
+	<div class="heading">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 hidden-xs">
+					<ul class="social">
+						<li><a href="https://www.instagram.com/yarique_dsply/" class="fa fa-instagram"></a></li>
+						<li><a href="https://www.facebook.com/yarique.zhukovskyi" class="fa fa-facebook-square"></a>
+						</li>
+						<li><a href="https://twitter.com/YariqueZ" class="fa fa-twitter-square"></a></li>
+					</ul>
+				</div>
+				<div class="col-sm-8">
+					<div class="finder">
+						<a href="#">
+							<span class="fa fa-map-marker"></span> Знайти наше пиво
+						</a>
+					</div>
+					<div class="cart">
+						<a href="{% url 'carts:cart'%}">
+							{% if items_quantity > 0 %}
+							<span class="fa fa-shopping-cart"></span> {{ items_quantity }}
+							{% else %}
+							<span class="fa fa-shopping-cart"></span>
+							{% endif %}
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="navbar-header">
+			<a href="{% url 'products:home' %}" class="logo" title="Домашня сторінка">
+				<img src="{% static 'about/images/logo.png' %}" alt="Logo">
+			</a>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Навігація</span>
+				<span class="icon-bar top-bar"></span>
+				<span class="icon-bar middle-bar"></span>
+				<span class="icon-bar bottom-bar"></span>
+			</button>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul id="menu-primary" class="nav navbar-nav">
+				<li class="active">
+					<span>
+						<a href="{% url 'products:home' %}">Головна</a>
+					</span>
+				</li>
+				<li class="dropdown">
+					<span>
+						<a href="{% url 'products:products' %}">Наше пиво</a>
+					</span>
+					{% if categories %}
+					<ul class="dropdown-menu">
+						{% for item in categories %}
+						<li><a href="#">{{ item.name }}</a></li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+				</li>
+				<li>
+					<span>
+						<a href="{% url 'about:about' %}">Про нас</a>
+					</span>
+				</li>
+				<li>
+					<span>
+						<a href="{% url 'about:contact' %}">Контакти</a>
+					</span>
+				</li>
+				{% if blog_posts %}
+				<li class="dropdown">
+					<span>
+						<a href="{% url 'blog:blog' %}">Блог</a>
+					</span>
+					<ul class="dropdown-menu">
+						{% for post in blog_posts %}
+						<li><a href="{% url 'blog:post_details' post.slug %}">{{ post.title }}</a></li>
+						{% endfor %}
+					</ul>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+	{% endblock %}
+</div>
+
+<!-- Hero -->
+{% block hero %}
+<div id="hero" class="single-page section" style="background-image: url(http://placehold.it/1500x500)">
+
+	<!-- Content -->
+	<div class="container">
+		<div class="row blurb scrollme animateme" data-when="exit" data-from="0" data-to="1" data-opacity="0"
+			data-translatey="100">
+			<div class="col-md-10 col-md-offset-1">
+				<h1>Історія про те як</h1>
+				<h2>Все почалось</h2>
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}
+{% block main_content %}
+{% if stories %}
+<!-- Section -->
+<div class="container-fluid light section">
+	<div id="carousel-1" class="carousel slide carousel-fade bs-carousel" data-ride="carousel">
+
+		<div class="carousel-inner" role="listbox">
+
+			{% for story in stories %}
+			<!-- Slide 1 -->
+			<div class="item">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6 matchHeight">
+							<img src="{{ story.image.url }}" alt="{{ story.title }}555x355" class="alignMiddle" />
+						</div>
+						<div class="col-sm-5 col-sm-push-1 matchHeight">
+							<section class="alignMiddle mobile-center">
+								<header>
+									<h1>{{ story.title }}</h1>
+									<h2>{{ story.subtitle }}</h2>
+								</header>
+								<p>{{ story.body }}</p>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+
+		<a class="left carousel-control" href="#carousel-1" data-slide="prev">
+			<span class="fa fa-chevron-left" aria-hidden="true"></span>
+		</a>
+		<a class="right carousel-control" href="#carousel-1" data-slide="next">
+			<span class="fa fa-chevron-right" aria-hidden="true"></span>
+		</a>
+	</div>
+</div>
+{% endif %}
+
+<!-- Section -->
+<div class="container-fluid dark section">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="history-logo">
+					<img src="{% static 'about/images/logo.png' %}" alt="Logo">
+				</div>
+				<div class="history">
+					<span class="date">1956</span>
+					<article class="scrollme animateme" data-when="enter" data-from="0.75" data-to="0" data-opacity="0">
+						<header>
+							<span>30 December</span>
+							<h2>The plan was in action</h2>
+						</header>
+						<p>Brewed with licorice; a proprietary, hand-smoked malt; and almost a pound of East Kent
+							Goldings hops per barrel.</p>
+					</article>
+					<article class="scrollme animateme" data-when="enter" data-from="0.75" data-to="0" data-opacity="0">
+						<header>
+							<span>14 October</span>
+							<h2>It all started over a beer</h2>
+						</header>
+						<p>Complex aromas: soft and powdery on the nose, with aromas of malt, chocolate chip cookie
+							dough and a deep-rooted fruitiness, notes of plum skins, spicy phenols and a soft bready
+							yeast character.</p>
+					</article>
+					<span class="date">1957</span>
+					<article class="scrollme animateme" data-when="enter" data-from="0.75" data-to="0" data-opacity="0">
+						<header>
+							<span>17 August</span>
+							<h2>Moving to London</h2>
+						</header>
+						<p>Naturally soured by farm valley winds blowing wild yeast into our oak casks. Finally, after a
+							year and a half of patient coaxing Wisconsin dark malts whirl in a kaleidoscope of cedar,
+							caramel and tart green plum exuberance.</p>
+					</article>
+					<article class="scrollme animateme" data-when="enter" data-from="0.75" data-to="0" data-opacity="0">
+						<header>
+							<span>27 May</span>
+							<h2>Producing our first beer</h2>
+						</header>
+						<p>One of the most sought-after stouts in Bell's history, Black Note Stout blends the complex
+							aromatics of Expedition Stout with the velvety smooth texture of Double Cream Stout and ages
+							the combination in freshly retired oak bourbon barrels for months.</p>
+					</article>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Section -->
+<div class="container-fluid light section">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 matchHeight">
+				<section class="alignMiddle mobile-center">
+					<header>
+						<h1>Наші</h1>
+						<h2>Партнери</h2>
+					</header>
+				</section>
+			</div>
+			<div class="col-sm-9 matchHeight">
+				<div class="owl-carousel" id="partners">
+					<div class="item">
+						<img src="{% static 'about/images/partner-1.png' %}" alt="The Craft Beer Shop" />
+					</div>
+					<div class="item">
+						<img src="{% static 'about/images/partner-2.png' %}" alt="The Craft Beer Shop" />
+					</div>
+					<div class="item">
+						<img src="{% static 'about/images/partner-3.png' %}" alt="The Craft Beer Shop" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Section -->
+<div class="container-fluid super-dark section">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-6 col-sm-3">
+				<div class="counter">
+					<img src="{% static 'products/images/Can.svg' %}" class="svg" alt="" />
+					<span>207</span>
+					Ароматів
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-3">
+				<div class="counter">
+					<img src="{% static 'products/images/Sign.svg' %}" class="svg" alt="" />
+					<span class="one">396</span>
+					Магазинів
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-3">
+				<div class="counter">
+					<img src="{% static 'products/images/Badge.svg' %}" class="svg" alt="" />
+					<span>60</span>
+					Років пивоваріння
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-3">
+				<div class="counter">
+					<img src="{% static 'products/images/BarrelSide.svg' %}" class="svg" alt="" />
+					<span>21</span>
+					Днів до готовності
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

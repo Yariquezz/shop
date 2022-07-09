@@ -9,9 +9,12 @@
     <link rel="icon" type="image/png" href="{% static 'products/images/favicon.png' %}" />
     <link href="{% static 'products/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'products/css/fakeLoader.css' %}" rel="stylesheet">
-    <link href="{% static 'products/owl-carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'products/style.css' %}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Catamaran:400,500,600,700,800%7CGrand+Hotel" rel="stylesheet">
+    <link href="{% static 'products/css/owl-carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'products/css/style.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:400,500,600,700,800%7CPAcifico" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <title>{% block title %} {% endblock %}</title>
     <script>
         function getCookie(name) {
@@ -80,30 +83,29 @@
                     <div class="col-sm-2">
                         <h6>Важлива інформація</h6>
                         <ul>
-                            <li><a href="index.html">Додому</a></li>
-                            <li><a href="shop.html">Магазин</a></li>
-                            <li><a href="our-story.html">Наша історія</a></li>
-                            <li><a href="blog.html">Блог</a></li>
+                            <li><a href="{% url 'products:home' %}">Додому</a></li>
+                            <li><a href="{% url 'products:products' %}">Магазин</a></li>
+                            <li><a href="{% url 'about:about' %}">Про нас</a></li>
+                            <li><a href="{% url 'blog:blog' %}">Блог</a></li>
                             <li><a href="#">Авторизуватись</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-2">
                         <h6>Допомога</h6>
                         <ul>
-                            <li><a href="#">Customer service</a></li>
+                            <li><a href="#">Сервіс клієнтів</a></li>
                             <li><a href="#">Знайти наше пиво</a></li>
                             <li><a href="#">Останні замовлення</a></li>
                             <li><a href="#">Контакти</a></li>
-                            <li><a href="#">Визначення &amp; Правила</a></li>
+                            <li><a href="#">Визначення та Правила</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-2">
                         <h6>Магазин</h6>
                         <ul>
-                            <li><a href="#">Pale ale</a></li>
-                            <li><a href="#">Golden ale</a></li>
-                            <li><a href="#">Dark ale</a></li>
-                            <li><a href="#">IPA</a></li>
+                            {% for item in categories %}
+                            <li><a href="#">{{ item.name }}</a></li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="col-sm-5 col-sm-push-1">
@@ -143,6 +145,7 @@
     <script src="{% static 'products/js/owl.carousel.js' %}"></script>
     <script src="{% static 'products/js/custom.js' %}"></script>
     <script src="https://use.fontawesome.com/4dfd2d448a.js"></script>
+    {% endlocalize %}
 </body>
 
 </html>

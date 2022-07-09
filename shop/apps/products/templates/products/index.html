@@ -27,7 +27,7 @@
 							{% if items_quantity > 0 %}
 							<span class="fa fa-shopping-cart"></span> {{ items_quantity }}
 							{% else %}
-							<span class="fa fa-shopping-cart"></span> Поки порожня
+							<span class="fa fa-shopping-cart"></span>
 							{% endif %}
 						</a>
 					</div>
@@ -55,41 +55,40 @@
 						<a href="{% url 'products:home' %}">Головна</a>
 					</span>
 				</li>
-				<li>
-					<span>
-						<a href="{% url 'products:products' %}">Магазин</a>
-					</span>
-				</li>
 				<li class="dropdown">
 					<span>
-						<a href="{% url 'products:our_products' %}">Наше пиво</a>
+						<a href="{% url 'products:products' %}">Наше пиво</a>
 					</span>
+					{% if categories %}
 					<ul class="dropdown-menu">
-						{% for item in fltr_items %}
+						{% for item in categories %}
 						<li><a href="#">{{ item.name }}</a></li>
 						{% endfor %}
 					</ul>
+					{% endif %}
 				</li>
 				<li>
 					<span>
-						<a href="{% url 'products:story' %}">Наша історія</a>
+						<a href="{% url 'about:about' %}">Про нас</a>
 					</span>
 				</li>
 				<li>
 					<span>
-						<a href="{% url 'products:contacts' %}">Контакти</a>
+						<a href="{% url 'about:contact' %}">Контакти</a>
 					</span>
 				</li>
+				{% if blog_posts %}
 				<li class="dropdown">
 					<span>
 						<a href="{% url 'blog:blog' %}">Блог</a>
 					</span>
 					<ul class="dropdown-menu">
 						{% for post in blog_posts %}
-						<li><a href="{% url 'blog:post' post.slug %}">{{ post.title }}</a></li>
+						<li><a href="{% url 'blog:post_details' post.slug %}">{{ post.title }}</a></li>
 						{% endfor %}
 					</ul>
 				</li>
+				{% endif %}
 			</ul>
 		</div>
 	</div>
@@ -117,7 +116,7 @@
 					<div class="col-md-10 col-md-offset-1">
 						<h1>Більше ста смаків</h1>
 						<h2>домашнього <br />крафтового пива</h2>
-						<a href="#" class="btn btn-default">
+						<a href="{% url 'products:products' %}" class="btn btn-default">
 							<span>Більше</span>
 						</a>
 					</div>
@@ -133,7 +132,7 @@
 					<div class="col-md-10 col-md-offset-1">
 						<h1>Для створення ми використовуємо тільки найкращі інгредієнти</h1>
 						<h2>для ідеального<br />крафтового пива</h2>
-						<a href="#" class="btn btn-default">
+						<a href="{% url 'products:products' %}" class="btn btn-default">
 							<span>Більше</span>
 						</a>
 					</div>
@@ -149,7 +148,7 @@
 					<div class="col-md-10 col-md-offset-1">
 						<h1>Для створення ми використовуємо тільки найкращі інгредієнти</h1>
 						<h2>для ідеального<br />крафтового пива</h2>
-						<a href="#" class="btn btn-default">
+						<a href="{% url 'products:products' %}" class="btn btn-default">
 							<span>Більше</span>
 						</a>
 					</div>
@@ -177,28 +176,28 @@
 					Досить сухий у фініші, із затяжним дріжджовим характером,
 					відтінком підсмаженої солодощі та приємним смаком.
 				</p>
-				<a href="{% url 'products:our_products' %}" class="btn btn-default"><span>Показати більше</span></a>
+				<a href="{% url 'products:products' %}" class="btn btn-default"><span>Показати більше</span></a>
 			</section>
 		</div>
 		<div class="col-sm-6 matchHeight" style="background-image: url(http://placehold.it/750x485);">
 			<div class="row">
 				<div class="col-xs-6 icon-grid">
-					<img src="{% static 'products/images/Hops.svg %}" class="svg" alt="Quality Ingredients" />
+					<img src="{% static 'products/images/Hops.svg' %}" class="svg" alt="Quality Ingredients" />
 					<h4>Якісні інгредієнти</h4>
 					<p>Claritas est etiam processus dynamicus, qui sequitur mutationem.</p>
 				</div>
 				<div class="col-xs-6 icon-grid">
-					<img src="{% static 'products/images/Sun.svg %}" class="svg" alt="Natural sunshine" />
+					<img src="{% static 'products/images/Sun.svg' %}" class="svg" alt="Natural sunshine" />
 					<h4>Природнє освіщення</h4>
 					<p>Claritas est etiam processus dynamicus, qui sequitur mutationem.</p>
 				</div>
 				<div class="col-xs-6 icon-grid">
-					<img src="{% static 'products/images/Barrel.svg %}" class="svg" alt="Fermentation" />
+					<img src="{% static 'products/images/Barrel.svg' %}" class="svg" alt="Fermentation" />
 					<h4>Ферментація</h4>
 					<p>Claritas est etiam processus dynamicus, qui sequitur mutationem.</p>
 				</div>
 				<div class="col-xs-6 icon-grid">
-					<img src="{% static 'products/images/BottleCrate.svg %}" class="svg" alt="Unrivalled taste" />
+					<img src="{% static 'products/images/BottleCrate.svg' %}" class="svg" alt="Unrivalled taste" />
 					<h4>Неперевершений смак</h4>
 					<p>Claritas est etiam processus dynamicus, qui sequitur mutationem.</p>
 				</div>
@@ -206,7 +205,7 @@
 		</div>
 	</div>
 </div>
-
+{% if info %}
 <!-- Section -->
 <div class="container-fluid light section" style="background-image: url(http://placehold.it/950x640);">
 	<div id="carousel-1" class="carousel slide carousel-fade bs-carousel" data-ride="carousel">
@@ -225,7 +224,7 @@
 									<h1>{{ info.title }}</h1>
 									<h2>{{ info.subtitle }}</h2>
 								</header>
-								<p>{{ info.article }}</p>
+								<p>{{ info.body }}</p>
 								<a href="{% url 'about:article' info.slug %}" class="btn btn-default"><span>Дізнатись
 										більше</span></a>
 							</section>
@@ -233,7 +232,7 @@
 					</div>
 				</div>
 			</div>
-			{% endif %}
+			{% endfor %}
 		</div>
 		<a class="left carousel-control" href="#carousel-1" data-slide="prev">
 			<span class="fa fa-chevron-left" aria-hidden="true"></span>
@@ -243,7 +242,8 @@
 		</a>
 	</div>
 </div>
-
+{% endif %}
+{% if products %}
 <!-- Section -->
 <div class="container-fluid dark section" style="background-image: url(http://placehold.it/880x650);">
 	<div class="container">
@@ -263,31 +263,30 @@
 			<div class="col-sm-6 col-sm-push-1 matchHeight">
 				<div class="owl-carousel">
 					<!-- Products -->
-					{% if products_list %}
-					{% for product in products_list %}
+					{% for product in products %}
 					<div class="product item">
 						<a href="{% url 'products:product_detail' product.slug %}">
 							<span>Buy it</span>
 							{% if product.image_1 %}
-							<img src="http://placehold.it/169x299" alt="{{ product.title }}">
+							<img src="{{ product.image_1.url }}" alt="{{ product.title }} 169x299">
 							{% endif %}
 						</a>
 						<h3>{{ product.title }}</h3>
-						<h4>UAH {{ product.price|floatformat:2 }}</h4>
+						<h4>{{ product.price|floatformat:2 }}</h4>
 					</div>
 					{% endfor %}
-					{% endif %}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+{% endif %}
 
 <!-- Section -->
 <div class="container-fluid light section no-padding">
 	<div class="container">
 		<div class="row">
-			{% if products_list %}
+			{% if blog_posts %}
 			{% for post in blog_posts %}
 			<div class="col-sm-6 latest-post odd matchHeight">
 				<a href="{% url 'blog:post' post.slug %}"></a>
@@ -297,7 +296,7 @@
 							<span class="date">{{ post.created_on }}</span>
 							<h2>{{ post.title }}</h2>
 						</header>
-						<p>{{ post.article|slice:100|safe }}</p>
+						<p>{{ post.body|slice:100|safe }}</p>
 						<p><a href="{% url 'blog:post' post.slug %}" class="underline">Дізнатись більше</span></p>
 					</div>
 				</div>
@@ -305,6 +304,7 @@
 					style="background-image: url(http://placehold.it/750x535); background-size: 750px 535px;"></div>
 			</div>
 			{% endfor %}
+			{% endif %}
 
 		</div>
 	</div>
@@ -316,28 +316,28 @@
 		<div class="row">
 			<div class="col-xs-6 col-sm-3">
 				<div class="counter">
-					<img src="{% static 'products/images/Can.svg %}" class="svg" alt="" />
+					<img src="{% static 'products/images/Can.svg' %}" class="svg" alt="" />
 					<span>207</span>
 					Ароматів
 				</div>
 			</div>
 			<div class="col-xs-6 col-sm-3">
 				<div class="counter">
-					<img src="{% static 'products/images/Sign.svg %}" class="svg" alt="" />
+					<img src="{% static 'products/images/Sign.svg' %}" class="svg" alt="" />
 					<span class="one">396</span>
 					Магазинів
 				</div>
 			</div>
 			<div class="col-xs-6 col-sm-3">
 				<div class="counter">
-					<img src="{% static 'products/images/Badge.svg %}" class="svg" alt="" />
+					<img src="{% static 'products/images/Badge.svg' %}" class="svg" alt="" />
 					<span>60</span>
 					Років пивоваріння
 				</div>
 			</div>
 			<div class="col-xs-6 col-sm-3">
 				<div class="counter">
-					<img src="{% static 'products/images/BarrelSide.svg %}" class="svg" alt="" />
+					<img src="{% static 'products/images/BarrelSide.svg' %}" class="svg" alt="" />
 					<span>21</span>
 					Днів до готовності
 				</div>

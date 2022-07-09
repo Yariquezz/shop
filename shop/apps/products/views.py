@@ -1,8 +1,11 @@
+from unicodedata import category
 from django.http import JsonResponse
 from django.views import generic
 from .models import Products, Category
 from apps.carts.models import Cart, CartItems
 from apps.orders.models import Warehouse
+from apps.blog.models import Blog
+from apps.about.models import About
 from apps.accounts.models import Customer
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q, Sum
@@ -17,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 class ProductsList(generic.ListView):
     queryset = Products.objects.filter(status=1)
-    template_name = 'products/products.html'
+    template_name = 'products/shop.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -39,8 +42,8 @@ class ProductsList(generic.ListView):
             customer=customer,
             is_ordered=False,
         )
-        fltr_items = Category.objects.all()
-        context['fltr_items'] = fltr_items
+        categories = Category.objects.all()
+        context['categories'] = categories
         if cart:
             context['cart'] = cart
             context['cart_items'] = CartItems.objects.filter(
@@ -88,7 +91,7 @@ def filter(request, *args, **kwargs):
     ).aggregate(Sum('quantity'))
     context['items_quantity'] = quantity['quantity__sum']
 
-    return render(request, 'products/products.html', context)
+    return render(request, 'products/shop.html', context)
 
 
 class ProductDetail(generic.DetailView):
@@ -170,6 +173,45 @@ def add_to_cart(request, product_code):
     cart_item.save()
 
     return redirect('products:products')
+
+def home(request):
+   
+    try:
+        customer = request.user.customer
+    except Exception as err:
+        logger.error(err)
+        request.session.setdefault(
+            'device',
+            str(uuid.uuid4())
+        )
+        device = request.COOKIES.get(
+            'device'
+        )
+        customer, created = Customer.objects.get_or_create(
+            device=device
+        )
+    cart, created = Cart.objects.get_or_create(
+        customer=customer,
+        is_ordered=False,
+    )
+    context = dict(
+        blog_posts=Blog.objects.filter(status=1),
+        info=About.objects.filter(status=1),
+        products=Products.objects.filter(status=1),
+        categories=Category.objects.all(),
+        cart=cart,
+        cart_items=CartItems.objects.filter(
+            cart=cart
+        )
+    )
+
+    quantity = CartItems.objects.filter(
+        cart=cart
+    ).aggregate(Sum('quantity'))
+    context['items_quantity'] = quantity['quantity__sum']
+    return render(request, 'products/index.html', context)
+    
+
 
 
 def get_warehouses(request):

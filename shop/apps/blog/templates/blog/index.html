@@ -1,0 +1,343 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block title %} Магазин {% endblock %}
+<!-- Navigation -->
+<div class="navbar section no-padding" role="navigation">
+	<!-- Heading -->
+	{% block nav_bar %}
+	<div class="heading">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 hidden-xs">
+					<ul class="social">
+						<li><a href="https://www.instagram.com/yarique_dsply/" class="fa fa-instagram"></a></li>
+						<li><a href="https://www.facebook.com/yarique.zhukovskyi" class="fa fa-facebook-square"></a>
+						</li>
+						<li><a href="https://twitter.com/YariqueZ" class="fa fa-twitter-square"></a></li>
+					</ul>
+				</div>
+				<div class="col-sm-8">
+					<div class="finder">
+						<a href="#">
+							<span class="fa fa-map-marker"></span> Знайти наше пиво
+						</a>
+					</div>
+					<div class="cart">
+						<a href="{% url 'carts:cart'%}">
+							{% if items_quantity > 0 %}
+							<span class="fa fa-shopping-cart"></span> {{ items_quantity }}
+							{% else %}
+							<span class="fa fa-shopping-cart"></span> Поки порожня
+							{% endif %}
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="navbar-header">
+			<a href="{% url 'products:home' %}" class="logo" title="Домашня сторінка">
+				<img src="{% static 'products/images/logo.png' %}" alt="Logo">
+			</a>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Навігація</span>
+				<span class="icon-bar top-bar"></span>
+				<span class="icon-bar middle-bar"></span>
+				<span class="icon-bar bottom-bar"></span>
+			</button>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul id="menu-primary" class="nav navbar-nav">
+				<li class="active">
+					<span>
+						<a href="{% url 'products:home' %}">Головна</a>
+					</span>
+				</li>
+				<li class="dropdown">
+					<span>
+						<a href="{% url 'products:products' %}">Наше пиво</a>
+					</span>
+					<ul class="dropdown-menu">
+						{% for item in categories %}
+						<li><a href="#">{{ item.name }}</a></li>
+						{% endfor %}
+					</ul>
+				</li>
+				<li>
+					<span>
+						<a href="{% url 'about:about' %}">Наша історія</a>
+					</span>
+				</li>
+				<li>
+					<span>
+						<a href="{% url 'about:contacts' %}">Контакти</a>
+					</span>
+				</li>
+				<li class="dropdown">
+					<span>
+						<a href="{% url 'blog:blog' %}">Блог</a>
+					</span>
+					<ul class="dropdown-menu">
+						{% for post in blog_posts %}
+						<li><a href="{% url 'blog:post' post.slug %}">{{ post.title }}</a></li>
+						{% endfor %}
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	{% endblock %}
+</div>
+
+<!-- Hero -->
+{% block hero %}
+<div id="hero" class="carousel slide carousel-fade section no-padding" data-ride="carousel">
+	<!-- Indicators -->
+	<ol class="carousel-indicators">
+		<li data-target="#hero" data-slide-to="0" class="active"></li>
+		<li data-target="#hero" data-slide-to="1"></li>
+		<li data-target="#hero" data-slide-to="2"></li>
+	</ol>
+
+	<!-- Wrapper for slides -->
+	<div class="carousel-inner">
+
+		<div class="item active" style="background-image: url(http://placehold.it/1500x730)">
+			<!-- Content -->
+			<div class="container">
+				<div class="row blurb scrollme animateme" data-when="exit" data-from="0" data-to="1" data-opacity="0"
+					data-translatey="100">
+					<div class="col-md-10 col-md-offset-1">
+						<h1>Більше ста смаків</h1>
+						<h2>домашнього <br />крафтового пива</h2>
+						<a href="#" class="btn btn-default">
+							<span>Більше</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="item" style="background-image: url(http://placehold.it/1500x730)">
+			<!-- Content -->
+			<div class="container">
+				<div class="row blurb scrollme animateme" data-when="exit" data-from="0" data-to="1" data-opacity="0"
+					data-translatey="100">
+					<div class="col-md-10 col-md-offset-1">
+						<h1>Для створення ми використовуємо тільки найкращі інгредієнти</h1>
+						<h2>для ідеального<br />крафтового пива</h2>
+						<a href="#" class="btn btn-default">
+							<span>Більше</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="item" style="background-image: url(http://placehold.it/1500x730)">
+			<!-- Content -->
+			<div class="container">
+				<div class="row blurb scrollme animateme" data-when="exit" data-from="0" data-to="1" data-opacity="0"
+					data-translatey="100">
+					<div class="col-md-10 col-md-offset-1">
+						<h1>Для створення ми використовуємо тільки найкращі інгредієнти</h1>
+						<h2>для ідеального<br />крафтового пива</h2>
+						<a href="#" class="btn btn-default">
+							<span>Більше</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}
+{% block main_content %}
+<!-- Section -->
+<div class="container-fluid dark section no-padding">
+	<div class="row">
+		<div class="col-sm-6 matchHeight scrollme animateme" data-when="enter" data-from="0.75" data-to="0"
+			data-opacity="0" data-translatex="-75">
+			<section class="alignMiddle padding-80 mobile-center">
+				<header>
+					<h1>Як ми стоврюємо</h1>
+					<h2>Наше пиво</h2>
+				</header>
+				<p>Посипання корицею. Смак апельсинової цедри стає більш вираженим,
+					коли пиво нагрівається, простягаючись до фінішу.
+					Чоловіче, це пиво повсюдно.
+					Досить сухий у фініші, із затяжним дріжджовим характером,
+					відтінком підсмаженої солодощі та приємним смаком.
+				</p>
+				<a href="{% url 'products:our_products' %}" class="btn btn-default"><span>Показати більше</span></a>
+			</section>
+		</div>
+		<div class="col-sm-6 matchHeight" style="background-image: url(http://placehold.it/750x485);">
+			<div class="row">
+				<div class="col-xs-6 icon-grid">
+					<img src="{% static 'products/images/Hops.svg %}" class="svg" alt="Quality Ingredients" />
+					<h4>Якісні інгредієнти</h4>
+					<p>Claritas est etiam processus dynamicus, qui sequitur mutationem.</p>
+				</div>
+				<div class="col-xs-6 icon-grid">
+					<img src="{% static 'products/images/Sun.svg %}" class="svg" alt="Natural sunshine" />
+					<h4>Природнє освіщення</h4>
+					<p>Claritas est etiam processus dynamicus, qui sequitur mutationem.</p>
+				</div>
+				<div class="col-xs-6 icon-grid">
+					<img src="{% static 'products/images/Barrel.svg %}" class="svg" alt="Fermentation" />
+					<h4>Ферментація</h4>
+					<p>Claritas est etiam processus dynamicus, qui sequitur mutationem.</p>
+				</div>
+				<div class="col-xs-6 icon-grid">
+					<img src="{% static 'products/images/BottleCrate.svg %}" class="svg" alt="Unrivalled taste" />
+					<h4>Неперевершений смак</h4>
+					<p>Claritas est etiam processus dynamicus, qui sequitur mutationem.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Section -->
+<div class="container-fluid light section" style="background-image: url(http://placehold.it/950x640);">
+	<div id="carousel-1" class="carousel slide carousel-fade bs-carousel" data-ride="carousel">
+		<div class="carousel-inner" role="listbox">
+			{% for info in about_info %}
+			<!-- Slide 1 -->
+			<div class="item active">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6 matchHeight">
+							<img src="http://placehold.it/555x355" alt="About our Brewery" class="alignMiddle" />
+						</div>
+						<div class="col-sm-5 col-sm-push-1 matchHeight">
+							<section class="alignMiddle mobile-center">
+								<header>
+									<h1>{{ info.title }}</h1>
+									<h2>{{ info.subtitle }}</h2>
+								</header>
+								<p>{{ info.article }}</p>
+								<a href="{% url 'about:article' info.slug %}" class="btn btn-default"><span>Дізнатись
+										більше</span></a>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+		<a class="left carousel-control" href="#carousel-1" data-slide="prev">
+			<span class="fa fa-chevron-left" aria-hidden="true"></span>
+		</a>
+		<a class="right carousel-control" href="#carousel-1" data-slide="next">
+			<span class="fa fa-chevron-right" aria-hidden="true"></span>
+		</a>
+	</div>
+</div>
+
+<!-- Section -->
+<div class="container-fluid dark section" style="background-image: url(http://placehold.it/880x650);">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-5 matchHeight scrollme animateme" data-when="enter" data-from="0.75" data-to="0"
+				data-opacity="0" data-translatex="-75">
+				<div class="alignMiddle mobile-center">
+					<header>
+						<h1>Спробуй</h1>
+						<h2>Пивну підбірку</h2>
+					</header>
+					<p>У міру нагрівання пива з’являються димні відтінки, а також тонкі краплі карамелі.
+						Сухий післясмак та гірчинка</p>
+					<a href="{% url 'products:products' %}" class="btn btn-default"><span>Покажи мені більше</span></a>
+				</div>
+			</div>
+			<div class="col-sm-6 col-sm-push-1 matchHeight">
+				<div class="owl-carousel">
+					<!-- Products -->
+					{% if products_list %}
+					{% for product in products_list %}
+					<div class="product item">
+						<a href="{% url 'products:product_detail' product.slug %}">
+							<span>Buy it</span>
+							{% if product.image_1 %}
+							<img src="http://placehold.it/169x299" alt="{{ product.title }}">
+							{% endif %}
+						</a>
+						<h3>{{ product.title }}</h3>
+						<h4>UAH {{ product.price|floatformat:2 }}</h4>
+					</div>
+					{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Section -->
+<div class="container-fluid light section no-padding">
+	<div class="container">
+		<div class="row">
+			{% if products_list %}
+			{% for post in blog_posts %}
+			<div class="col-sm-6 latest-post odd matchHeight">
+				<a href="{% url 'blog:post' post.slug %}"></a>
+				<div class="row">
+					<div class="col-sm-10 col-sm-push-1">
+						<header>
+							<span class="date">{{ post.created_on }}</span>
+							<h2>{{ post.title }}</h2>
+						</header>
+						<p>{{ post.article|slice:100|safe }}</p>
+						<p><a href="{% url 'blog:post' post.slug %}" class="underline">Дізнатись більше</span></p>
+					</div>
+				</div>
+				<div class="background"
+					style="background-image: url(http://placehold.it/750x535); background-size: 750px 535px;"></div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>
+</div>
+
+<!-- Section -->
+<div class="container-fluid super-dark section">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-6 col-sm-3">
+				<div class="counter">
+					<img src="{% static 'products/images/Can.svg %}" class="svg" alt="" />
+					<span>207</span>
+					Ароматів
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-3">
+				<div class="counter">
+					<img src="{% static 'products/images/Sign.svg %}" class="svg" alt="" />
+					<span class="one">396</span>
+					Магазинів
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-3">
+				<div class="counter">
+					<img src="{% static 'products/images/Badge.svg %}" class="svg" alt="" />
+					<span>60</span>
+					Років пивоваріння
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-3">
+				<div class="counter">
+					<img src="{% static 'products/images/BarrelSide.svg %}" class="svg" alt="" />
+					<span>21</span>
+					Днів до готовності
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

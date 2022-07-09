@@ -1,0 +1,178 @@
+{% extends 'products/base.html' %}
+
+{% block title %} {{ object.title }} {% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav_bar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        {% if items_quantity > 0 %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {% endif %}
+        <a class="navbar-brand" href="/">Магазин</a>
+        {% if user.is_active %}
+        <a href="{% url 'accounts:logout'%}" class="nav-link">Вийти</a>
+        {% else %}
+        <a href="{% url 'accounts:login'%}" class="nav-link">Авторизуватись</a>
+        {% endif %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if user.is_active %}
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Обліковий запис
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Користувач: {{ user }}</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders:orders'%}">Замовлення</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Вийти</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    {% if items_quantity == 1 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Кошик | {{ items_quantity }} товар</a>
+                    {% elif items_quantity > 0 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Кошик | {{ items_quantity }} товарів</a>
+                    {% endif %}
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    {% if items_quantity == 1 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Кошик | {{ items_quantity }} товар</a>
+                    {% elif items_quantity > 0 %}
+                    <a href="{% url 'carts:cart'%}" class="nav-link">Кошик | {{ items_quantity }} товарів</a>
+                    {% endif %}
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <form class="d-flex" action="{% url 'products:search_results' %}" method="GET">
+            <input class="form-control me-2" type="text" placeholder="Пошук" aria-label="Search" name="q">
+            <button class="btn btn-outline-secondary" type="submit">Пошук</button>
+        </form>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Вийти</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Бажаєте вийти?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Вийти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+{% block main_content %}
+<div class="row g-5">
+    <article class="blog-post">
+        <h2 class="blog-post-title"><strong>{{ object.title }}</strong></h2>
+        <p class="blog-post-meta">{{ object.created_on}}
+            </br></br>
+            {% if object.image_1 and not object.image_2 %}
+            <img src="{{ object.image_1.url }}" class="card-img-top" alt="object.image_1"
+                style="width: 50rem;padding: 2%;">
+            </br>
+            {% elif object.image_2 and object.image_3 %}
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ object.image_1.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ object.image_2.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ object.image_3.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Наступний</span>
+            </button>
+        </div>
+        {% elif object.image_2 and not object.image_3 %}
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ object.image_1.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ object.image_2.url }}" class="d-block w-100" alt="{{ object.title }}">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        {% endif %}
+        <p>{{ object.description | safe }}</p>
+        <p class="card-text">
+            <small class="text-muted">{{ object.created_on|date:"M. d, Y"}}</small>
+        </p>
+        <p class="card-text"><strong>{{ object.price|floatformat:2 }} UAH </strong></p>
+        <form method="post" action="{% url 'products:filter' %}">{% csrf_token %}
+            <input type="hidden" name="products" value="{{ object.category }}">
+            <button type="submit" name="products" value="{{ object.category }}" class="btn btn-light">
+                Інші товари категорії {{ object.category }}
+            </button>
+        </form>
+        </br>
+        <a href="{% url 'products:add_to_cart' object.product_code %}" class="btn btn-dark" style="margin: 5px;">Додати
+            у кошик</a>
+        <a class="btn btn-dark" style="margin: 5px;" onClick="javascript:history.go(-1);">Повернутись на попередню
+            сторінку</a>
+    </article>
+</div>
+<!-- Modal auth -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel2">Авторизуватись</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Для того щоб додати продукт у кошик необхідо авторизуватись </p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" href="{% url 'accounts:login' %}">Авторизуватись</a>
+                <a class="btn btn-primary" href="{% url 'accounts:register' %}">Реєстрація</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'apps.carts',
     'apps.orders',
     'apps.products',
+    'apps.blog',
+    'apps.about',
 ]
 
 MIDDLEWARE = [
@@ -85,10 +87,10 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DB_NAME", default='test_shop'),
+        'NAME': os.environ.get("DB_NAME", default='shop'),
         'USER': os.environ.get("DB_USER", default='django'),
         'PASSWORD': os.environ.get("DB_PASS", default='django'),
-        'HOST': os.environ.get("DB_HOST", default='localhost'),
+        'HOST': os.environ.get("DB_HOST", default='192.168.0.108'),
         'PORT': os.environ.get("DB_PORT", default='5432'),
     },
 }
@@ -213,9 +215,9 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get(
     "EMAIL_HOST_USER",
-    "admin@gmail.com"
+    "yariquezz@gmail.com"
 )
 EMAIL_HOST_PASSWORD = os.environ.get(
     "EMAIL_HOST_PASSWORD",
-    "your_pass"
+    "obhgamccglhrkmvq"
 )

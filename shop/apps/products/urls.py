@@ -26,11 +26,16 @@ urlpatterns = [
     ),
     path(
         '',
+        views.home,
+        name='home'
+    ),
+    path(
+        'products/',
         views.ProductsList.as_view(),
         name='products'
     ),
     path(
-        '<slug:slug>/',
+        'products/<slug:slug>',
         views.ProductDetail.as_view(),
         name='product_detail'
     ),

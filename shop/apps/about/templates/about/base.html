@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'about/images/favicon.png' %}" />
+    <link href="{% static 'about/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'about/css/fakeLoader.css' %}" rel="stylesheet">
+    <link href="{% static 'about/css/owl-carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'about/css/style.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:400,500,600,700,800%7CPAcifico" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <title>{% block title %} {% endblock %}</title>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function uuidv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        let device = getCookie('device');
+
+        if (device == null || device == undefined) {
+            device = uuidv4();
+        }
+
+        document.cookie = 'device=' + device + ";domain=;path=/"
+    </script>
+    <!-- [if IE 9]>
+			<link href="css/ie9.css" rel="stylesheet">
+		<![endif]-->
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif] -->
+</head>
+
+<body>
+    {% load l10n %}
+    {% localize on %}
+    <!-- Fake page loading -->
+    <div id="fakeLoader"></div>
+
+    <!-- Wrapper -->
+    <div class="wrapper">
+
+        <!-- Navigation -->
+        <div class="navbar section no-padding" role="navigation">
+            <!-- Heading -->
+            {% block nav_bar %}{% endblock %}
+        </div>
+
+        <!-- Hero -->
+        {% block hero %}{% endblock %}
+        {% block main_content %}{% endblock %}
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <h6>Важлива інформація</h6>
+                        <ul>
+                            <li><a href="{% url 'products:home' %}">Додому</a></li>
+                            <li><a href="{% url 'products:products' %}">Магазин</a></li>
+                            <li><a href="{% url 'about:about' %}">Про нас</a></li>
+                            <li><a href="{% url 'blog:blog' %}">Блог</a></li>
+                            <li><a href="#">Авторизуватись</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2">
+                        <h6>Допомога</h6>
+                        <ul>
+                            <li><a href="#">Сервіс клієнтів</a></li>
+                            <li><a href="#">Знайти наше пиво</a></li>
+                            <li><a href="#">Останні замовлення</a></li>
+                            <li><a href="#">Контакти</a></li>
+                            <li><a href="#">Визначення та Правила</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2">
+                        <h6>Магазин</h6>
+                        <ul>
+                            <li><a href="#">Pale ale</a></li>
+                            <li><a href="#">Golden ale</a></li>
+                            <li><a href="#">Dark ale</a></li>
+                            <li><a href="#">IPA</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-5 col-sm-push-1">
+                        <h6>Інформація</h6>
+                        <p><i class="fa fa-map-marker"></i>Україна, Київська обл. м. Ірпінь, вул. Мечникова, 112А</p>
+                        <p><i class="fa fa-envelope-o"></i> sales@craftbeer-nation.com</p>
+                        <p><i class="fa fa-phone"></i> +38 063 433 89 63</p>
+                        <ul class="social">
+                            <li><a href="https://www.instagram.com/yarique_dsply/" class="fa fa-instagram"></a></li>
+                            <li><a href="https://www.facebook.com/yarique.zhukovskyi" class="fa fa-facebook-square"></a>
+                            </li>
+                            <li><a href="https://twitter.com/YariqueZ" class="fa fa-twitter-square"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>2022 &copy; Craft Beer Nation / <a href="http://www.yarique.com">Web design by Yarique.com</a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    {% load static %}
+
+    <script src="{% static 'about/js/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'about/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'about/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'about/js/headhesive.min.js' %}"></script>
+    <script src="{% static 'about/js/matchHeight.min.js' %}"></script>
+    <script src="{% static 'about/js/modernizr.custom.js' %}"></script>
+    <script src="{% static 'about/js/waypoints.min.js' %}"></script>
+    <script src="{% static 'about/js/counterup.js' %}"></script>
+    <script src="{% static 'about/js/scrollme.min.js' %}"></script>
+    <script src="{% static 'about/js/fakeLoader.min.js' %}"></script>
+    <script src="{% static 'about/js/owl.autoplay.js' %}"></script>
+    <script src="{% static 'about/js/owl.carousel.js' %}"></script>
+    <script src="{% static 'about/js/custom.js' %}"></script>
+    <script src="https://use.fontawesome.com/4dfd2d448a.js"></script>
+    {% endlocalize %}
+</body>
+
+</html>

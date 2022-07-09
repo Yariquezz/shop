@@ -11,6 +11,8 @@ urlpatterns = [
     path('accounts/', include('apps.accounts.urls', namespace='accounts')),
     path('carts/', include('apps.carts.urls', namespace='carts')),
     path('orders/', include('apps.orders.urls', namespace='orders')),
+    path('blog/', include('apps.blog.urls', namespace='blog')),
+    path('about/', include('apps.about.urls', namespace='about')),
     path('', include('apps.products.urls', namespace='products')),
 ]
 
